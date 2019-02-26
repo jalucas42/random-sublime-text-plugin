@@ -80,6 +80,12 @@ class RandomIntWindowCommand(RandomWindow):
         self.window.show_input_panel('Random integer from-to',self.default_range(), self.get_range, None, None)
 
 
+class RandomIntIncrementWindowCommand(RandomWindow):
+    def run(self):
+        self.text_command = 'random_int_increment'
+        self.window.show_input_panel('Incrementing integer start-incamt',"0,1", self.get_range, None, None)
+
+
 class RandomFloatWindowCommand(RandomWindow):
     def run(self):
         self.text_command = 'random_float'
@@ -95,6 +101,18 @@ Text commands
 class RandomIntCommand(RandomText):
     def generate_int(self):
         output = r.randint(self.start, self.stop)
+        return str(output)
+
+    def run(self, view, **kwargs):
+        self.start = kwargs['start']
+        self.stop = kwargs['stop']
+        self.insert(view, self.generate_int)
+
+class RandomIntIncrementCommand(RandomText):
+    def generate_int(self):
+        output = int(self.start)
+        self.start += self.stop
+        # output = r.randint(self.start, self.stop)
         return str(output)
 
     def run(self, view, **kwargs):
@@ -310,6 +328,7 @@ class RandomCountryCommand(RandomText):
 
     def run(self, view, **kwargs):
         self.insert(view, self.generate_country)
+
 
 """
 END Text commands
